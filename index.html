@@ -5,13 +5,13 @@
   <title>Электронная открытка</title>
   <style>
     body {
-      /* Сохраняем твой фон */
+      /* Фон твоей открытки */
       background: url('love.jpg') no-repeat center center fixed;
       background-size: cover;
 
       display: flex;
       flex-direction: column;
-      justify-content: space-between; /* Верх и низ */
+      justify-content: space-between; /* верх и низ */
       align-items: center;
       height: 100vh;
       margin: 0;
@@ -19,12 +19,27 @@
       color: #fff;
     }
 
-    /* Таймер в центре */
+    /* Таймер */
     .timer {
       font-size: 48px;
       font-weight: bold;
       margin-top: 50px;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+      animation: fadeIn 2s forwards;
+      opacity: 0;
+    }
+
+    /* Фото по центру */
+    .photo-container {
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .center-photo {
+      max-width: 80%;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
       animation: fadeIn 2s forwards;
       opacity: 0;
     }
@@ -66,14 +81,19 @@
   <!-- Таймер -->
   <div class="timer" id="timer">00:00:00:00</div>
 
+  <!-- Фото по центру -->
+  <div class="photo-container">
+    <img src="our_photo.jpg" alt="Наша фотография" class="center-photo">
+  </div>
+
   <!-- Фраза снизу -->
   <div class="love-text">
     И с каждым днем я люблю тебя все сильнее <span class="heart">❤️</span>
   </div>
 
   <script>
-    // Дата начала отношений: год, месяц (0=январь), день
-    const startDate = new Date(2025, 10, 12, 0, 0, 0); // например, 1 января 2025
+    // Дата начала отношений: 12 ноября 2024
+    const startDate = new Date(2024, 10, 12, 0, 0, 0); // 10 = ноябрь
 
     function updateTimer() {
       const now = new Date();
