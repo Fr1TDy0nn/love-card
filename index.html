@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Наша история</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Arial', sans-serif;
+      color: white;
+      text-align: center;
+      background: url('love.jpg') no-repeat center center/cover;
+      overflow: hidden;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); /* затемнение фона для читаемости текста */
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+
+    #counter {
+      font-size: 2em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>Мы вместе уже:</h1>
+    <div id="counter">0 дней 0 часов 0 минут 0 секунд 💕</div>
+  </div>
+
+  <script>
+    // Укажи дату начала отношений в формате ГГГГ, ММ-1, ДД
+    const startDate = new Date(2024, 11, 12); // пример: 1 мая 2024
+
+    function updateCounter() {
+      const now = new Date();
+      let diff = Math.floor((now - startDate) / 1000); // разница в секундах
+
+      const days = Math.floor(diff / (3600*24));
+      diff -= days * 3600*24;
+      const hours = Math.floor(diff / 3600);
+      diff -= hours * 3600;
+      const minutes = Math.floor(diff / 60);
+      const seconds = diff - minutes*60;
+
+      document.getElementById('counter').textContent =
+        `${days} дней ${hours} часов ${minutes} минут ${seconds} секунд 💕`;
+    }
+
+    setInterval(updateCounter, 1000);
+    updateCounter(); // первый запуск сразу
+  </script>
+</body>
+</html>
