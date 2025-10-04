@@ -85,63 +85,9 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
     }
-  </style>
-</head>
-<body>
-  <!-- СЦЕНА 1: открытка -->
-  <div class="scene active" id="scene1">
-    <div class="timer" id="timer">00:00:00:00</div>
-    <div class="photo-container">
-      <img src="ваша_фотка.jpg" alt="Наша фотография">
-    </div>
-    <div class="love-text">
-      И с каждым днем я люблю тебя все сильнее <span class="heart">❤️</span>
-    </div>
-  </div>
 
-  <!-- СЦЕНА 2: сообщение -->
-  <div class="scene" id="scene2">
-    <div class="message">
-      Моя маленькая, я знаю, что я нечасто радую тебя и делаю какие-либо подарки,
-      и мне очень захотелось исправить это и порадовать чем-то прямо сейчас.  
-      Я тебя очень сильно люблю, и ты у меня самая лучшая ❤️
-    </div>
-  </div>
-
-  <!-- СЦЕНА 3: видео -->
-  <div class="scene" id="scene3">
-    <video src="video.mp4" autoplay controls></video>
-  </div>
-
-  <script>
-    // Таймер от 12 ноября 2024
-    const startDate = new Date(2024, 10, 12, 0, 0, 0);
-    function updateTimer() {
-      const now = new Date();
-      let diff = Math.floor((now - startDate) / 1000);
-      const days = Math.floor(diff / (24 * 3600));
-      diff %= 24 * 3600;
-      const hrs = Math.floor(diff / 3600);
-      diff %= 3600;
-      const mins = Math.floor(diff / 60);
-      const secs = diff % 60;
-      document.getElementById('timer').textContent = 
-        `${days} д ${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-    }
-    setInterval(updateTimer, 1000);
-    updateTimer();
-
-    // Переход между сценами
-    setTimeout(() => {
-      document.getElementById('scene1').classList.remove('active');
-      document.getElementById('scene2').classList.add('active');
-    }, 5000); // 5 секунд
-
-    setTimeout(() => {
-      document.getElementById('scene2').classList.remove('active');
-      document.getElementById('scene3').classList.add('active');
-    }, 15000); // 5 + 10 секунд
-  </script>
-</body>
-</html>
+    video.visible {
+      opacity
