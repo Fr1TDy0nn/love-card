@@ -4,33 +4,32 @@
   <meta charset="UTF-8">
   <title>Электронная открытка</title>
   <style>
-    /* Основные стили открытки */
     body {
       background: linear-gradient(to right, #ffe6f0, #fff0f5);
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: space-between; /* Верх и низ */
       align-items: center;
       height: 100vh;
       margin: 0;
       font-family: 'Arial', sans-serif;
     }
 
-    h1 {
-      font-size: 36px;
+    /* Таймер в центре */
+    .timer {
+      font-size: 48px;
       color: #ff3366;
-      text-align: center;
-      margin: 10px 0;
+      margin-top: 50px;
       animation: fadeIn 2s forwards;
       opacity: 0;
     }
 
-    /* Текст с любовной фразой */
+    /* Фраза снизу */
     .love-text {
       font-size: 28px;
       font-weight: bold;
       text-align: center;
-      margin-top: 30px;
+      margin-bottom: 30px;
       background: linear-gradient(90deg, #ff3366, #ff66aa, #ff99cc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -44,39 +43,43 @@
     }
 
     /* Анимации */
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-
+    @keyframes fadeIn { to { opacity: 1; } }
     @keyframes gradientGlow {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-
     @keyframes heartbeat {
       0%, 100% { transform: scale(1); }
       25% { transform: scale(1.3); }
       50% { transform: scale(1); }
       75% { transform: scale(1.2); }
     }
-
-    /* Дополнительно можно добавить плавное появление всей страницы */
-    body {
-      animation: bodyFade 2s forwards;
-      opacity: 0;
-    }
-
-    @keyframes bodyFade {
-      to { opacity: 1; }
-    }
   </style>
 </head>
 <body>
-  <h1>Для тебя ❤️</h1>
+  <!-- Таймер -->
+  <div class="timer" id="timer">00:00:00</div>
 
+  <!-- Фраза снизу -->
   <div class="love-text">
     И с каждым днем я люблю тебя все сильнее <span class="heart">❤️</span>
   </div>
+
+  <script>
+    // Простой таймер: часы:минуты:секунды
+    function startTimer() {
+      const timer = document.getElementById('timer');
+      let seconds = 0;
+      setInterval(() => {
+        seconds++;
+        const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+        const secs = String(seconds % 60).padStart(2, '0');
+        timer.textContent = `${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+    startTimer();
+  </script>
 </body>
 </html>
