@@ -13,53 +13,59 @@
       overflow: hidden;
       font-family: 'Arial', sans-serif;
       color: #fff;
-      background: url('фон_твоей_открытки.jpg') no-repeat center center fixed;
-      background-size: cover;
       display: flex;
       justify-content: center;
       align-items: center;
       text-align: center;
-      transition: background 2s ease-in-out, opacity 1s ease-in-out;
+      background: #000;
     }
 
+    /* Все сцены имеют одинаковый фон */
     .scene {
       position: absolute;
       width: 100%;
       height: 100%;
+      background: url('фон_твоей_открытки.jpg') no-repeat center center fixed;
+      background-size: cover;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      padding: 20px;
       opacity: 0;
-      transition: opacity 1s ease-in-out;
+      transition: opacity 1.8s ease-in-out; /* плавное появление */
     }
 
     .scene.active {
       opacity: 1;
+      z-index: 1;
     }
 
+    /* Таймер */
     .timer {
       font-size: 48px;
       font-weight: bold;
-      margin-top: 50px;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
     }
 
+    /* Фото по центру */
     .photo-container img {
-      max-width: 80%;
+      max-width: 70%;
       height: auto;
       border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      margin: 20px 0;
     }
 
+    /* Фраза снизу */
     .love-text {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: bold;
-      margin-bottom: 30px;
       background: linear-gradient(90deg, #ff3366, #ff66aa, #ff99cc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      margin-top: 10px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
     }
 
     .heart {
@@ -70,32 +76,57 @@
       0%, 100% { transform: scale(1); }
       25% { transform: scale(1.3); }
       50% { transform: scale(1); }
-      75% { transform: scale(1.2); }
+      75% { transform: scale(1.15); }
     }
 
+    /* Сообщение */
     .message {
       font-size: 26px;
       max-width: 800px;
       line-height: 1.6;
-      padding: 0 20px;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+      padding: 20px;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 15px;
     }
 
+    /* Видео по центру */
     video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      width: 80%;
+      max-width: 900px;
+      border-radius: 15px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.5);
       opacity: 0;
-      transition: opacity 1.5s ease-in-out;
+      transition: opacity 1.8s ease-in-out;
     }
 
     video.visible {
       opacity: 1;
     }
+
+    /* Плавное затемнение экрана при смене сцен */
+    .fade-overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .fade-overlay.visible {
+      opacity: 1;
+    }
+
   </style>
 </head>
 <body>
-  <!-- СЦЕНА 1: открытка -->
+  <!-- затемнение -->
+  <div class="fade-overlay" id="fade"></div>
+
+  <!-- СЦЕНА 1 -->
   <div class="scene active" id="scene1">
     <div class="timer" id="timer">00:00:00:00</div>
     <div class="photo-container">
@@ -106,16 +137,16 @@
     </div>
   </div>
 
-  <!-- СЦЕНА 2: сообщение -->
+  <!-- СЦЕНА 2 -->
   <div class="scene" id="scene2">
     <div class="message">
-      Моя маленькая, я знаю, что я нечасто радую тебя и делаю какие-либо подарки,
-      и мне очень захотелось исправить это и порадовать чем-то прямо сейчас.  
+      Моя маленькая, я знаю, что я нечасто радую тебя и делаю какие-либо подарки,<br>
+      и мне очень захотелось исправить это и порадовать чем-то прямо сейчас.<br>
       Я тебя очень сильно люблю, и ты у меня самая лучшая ❤️
     </div>
   </div>
 
-  <!-- СЦЕНА 3: видео -->
+  <!-- СЦЕНА 3 -->
   <div class="scene" id="scene3">
     <video id="video" src="video.mp4" autoplay controls></video>
   </div>
@@ -140,17 +171,21 @@
     setInterval(updateTimer, 1000);
     updateTimer();
 
-    // Переходы между сценами
-    setTimeout(() => {
-      document.getElementById('scene1').classList.remove('active');
-      document.getElementById('scene2').classList.add('active');
-    }, 5000); // через 5 секунд — показать текст
+    const fade = document.getElementById('fade');
 
-    setTimeout(() => {
-      document.getElementById('scene2').classList.remove('active');
-      document.getElementById('scene3').classList.add('active');
-      document.getElementById('video').classList.add('visible');
-    }, 15000); // через 15 секунд — включить видео
+    function switchScene(from, to, delay = 1500) {
+      fade.classList.add('visible');
+      setTimeout(() => {
+        document.getElementById(from).classList.remove('active');
+        document.getElementById(to).classList.add('active');
+        if (to === 'scene3') document.getElementById('video').classList.add('visible');
+        fade.classList.remove('visible');
+      }, delay);
+    }
+
+    // Смена сцен
+    setTimeout(() => switchScene('scene1', 'scene2'), 5000);
+    setTimeout(() => switchScene('scene2', 'scene3'), 15000);
   </script>
 </body>
 </html>
