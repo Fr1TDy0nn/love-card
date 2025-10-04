@@ -2,116 +2,146 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Электронная открытка</title>
+  <title>Для моей любимой 💖</title>
   <style>
-    body {
-      /* Фон твоей открытки */
-      background: url('love.jpg') no-repeat center center fixed;
-      background-size: cover;
+    * { box-sizing: border-box; }
 
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between; /* верх и низ */
-      align-items: center;
-      height: 100vh;
+    body {
       margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
       font-family: 'Arial', sans-serif;
       color: #fff;
+      background: url('фон_твоей_открытки.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      transition: background 2s ease-in-out, opacity 1s ease-in-out;
     }
 
-    /* Таймер */
+    .scene {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .scene.active {
+      opacity: 1;
+    }
+
     .timer {
       font-size: 48px;
       font-weight: bold;
       margin-top: 50px;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-      animation: fadeIn 2s forwards;
-      opacity: 0;
     }
 
-    /* Фото по центру */
-    .photo-container {
-      margin: 20px 0;
-      text-align: center;
-    }
-
-    .center-photo {
+    .photo-container img {
       max-width: 80%;
       height: auto;
       border-radius: 15px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      animation: fadeIn 2s forwards;
-      opacity: 0;
     }
 
-    /* Фраза снизу */
     .love-text {
       font-size: 28px;
       font-weight: bold;
-      text-align: center;
       margin-bottom: 30px;
       background: linear-gradient(90deg, #ff3366, #ff66aa, #ff99cc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: gradientGlow 3s infinite alternate, fadeIn 2s forwards;
-      opacity: 0;
     }
 
     .heart {
-      display: inline-block;
       animation: heartbeat 1s infinite;
     }
 
-    /* Анимации */
-    @keyframes fadeIn { to { opacity: 1; } }
-    @keyframes gradientGlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
     @keyframes heartbeat {
       0%, 100% { transform: scale(1); }
       25% { transform: scale(1.3); }
       50% { transform: scale(1); }
       75% { transform: scale(1.2); }
     }
+
+    .message {
+      font-size: 26px;
+      max-width: 800px;
+      line-height: 1.6;
+      padding: 0 20px;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   </style>
 </head>
 <body>
-  <!-- Таймер -->
-  <div class="timer" id="timer">00:00:00:00</div>
-
-  <!-- Фото по центру -->
-  <div class="photo-container">
-    <img src="our_photo.jpg" alt="Наша фотография" class="center-photo">
+  <!-- СЦЕНА 1: открытка -->
+  <div class="scene active" id="scene1">
+    <div class="timer" id="timer">00:00:00:00</div>
+    <div class="photo-container">
+      <img src="ваша_фотка.jpg" alt="Наша фотография">
+    </div>
+    <div class="love-text">
+      И с каждым днем я люблю тебя все сильнее <span class="heart">❤️</span>
+    </div>
   </div>
 
-  <!-- Фраза снизу -->
-  <div class="love-text">
-    И с каждым днем я люблю тебя все сильнее <span class="heart">❤️</span>
+  <!-- СЦЕНА 2: сообщение -->
+  <div class="scene" id="scene2">
+    <div class="message">
+      Моя маленькая, я знаю, что я нечасто радую тебя и делаю какие-либо подарки,
+      и мне очень захотелось исправить это и порадовать чем-то прямо сейчас.  
+      Я тебя очень сильно люблю, и ты у меня самая лучшая ❤️
+    </div>
+  </div>
+
+  <!-- СЦЕНА 3: видео -->
+  <div class="scene" id="scene3">
+    <video src="video.mp4" autoplay controls></video>
   </div>
 
   <script>
-    // Дата начала отношений: 12 ноября 2024
-    const startDate = new Date(2024, 10, 12, 0, 0, 0); // 10 = ноябрь
-
+    // Таймер от 12 ноября 2024
+    const startDate = new Date(2024, 10, 12, 0, 0, 0);
     function updateTimer() {
       const now = new Date();
-      let diff = Math.floor((now - startDate) / 1000); // разница в секундах
-
+      let diff = Math.floor((now - startDate) / 1000);
       const days = Math.floor(diff / (24 * 3600));
       diff %= 24 * 3600;
       const hrs = Math.floor(diff / 3600);
       diff %= 3600;
       const mins = Math.floor(diff / 60);
       const secs = diff % 60;
-
       document.getElementById('timer').textContent = 
         `${days} д ${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
     }
-
     setInterval(updateTimer, 1000);
-    updateTimer(); // сразу показать
+    updateTimer();
+
+    // Переход между сценами
+    setTimeout(() => {
+      document.getElementById('scene1').classList.remove('active');
+      document.getElementById('scene2').classList.add('active');
+    }, 5000); // 5 секунд
+
+    setTimeout(() => {
+      document.getElementById('scene2').classList.remove('active');
+      document.getElementById('scene3').classList.add('active');
+    }, 15000); // 5 + 10 секунд
   </script>
 </body>
 </html>
